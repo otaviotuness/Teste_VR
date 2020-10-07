@@ -20,9 +20,46 @@ import javax.swing.JOptionPane;
  */
 public class AlunoDAO {
     public void create(ClassAluno c) throws SQLException{
+        int qtdAluno; 
+        int qtdCurso;
+        String sql;
+        ResultSet result = null;
         
         Connection conexao = new Conexao().getConnection();
         PreparedStatement statement = null;
+        
+        try {
+            sql = "select a.qtdAluno, b.qtdCurso " +
+                  "  from (select count(*) qtdAluno " +
+                  "          from aluno " +
+                  "         where curso = ?) a, " +
+                  "       (select qtd_aluno qtdCurso " +
+                  "           from curso) b";
+            
+            statement =  (PreparedStatement) conexao.prepareStatement(sql);
+            statement.setInt(1, c.getCurso());
+            result = statement.executeQuery();
+            
+            while (result.next()) {
+                qtdAluno = result.getInt("QTDALUNO");
+                qtdCurso = result.getInt("qtdCurso");
+                 
+                if (qtdAluno >= qtdCurso){
+                    JOptionPane.showMessageDialog(null, "Limite do curso atingido!"); 
+                    return;
+                 }
+            }
+            
+            
+            
+            
+              
+        } catch (SQLException ex) {
+            throw new RuntimeException("Aluno não cadastrado, verifique as informações: ", ex);
+        }finally{
+            Conexao.closeConnection(conexao, statement);
+        }
+        
 
         try {
             statement =  (PreparedStatement) conexao.prepareStatement("insert into aluno (matricula, nome, rg, cpf,curso)values(?,?,?,?,?)");

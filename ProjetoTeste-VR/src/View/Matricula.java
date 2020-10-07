@@ -29,6 +29,7 @@ public class Matricula extends javax.swing.JFrame {
     public Matricula() throws SQLException {
         initComponents();
         iniciar();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -223,6 +224,11 @@ public class Matricula extends javax.swing.JFrame {
             Logger.getLogger(Curso.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
+            readTableA();
+        } catch (SQLException ex) {
+            Logger.getLogger(Curso.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        try {
             readTableB();
         } catch (SQLException ex) {
             Logger.getLogger(Curso.class.getName()).log(Level.SEVERE, null, ex);
@@ -271,6 +277,11 @@ public class Matricula extends javax.swing.JFrame {
         }
         try {
             readTableB();
+        } catch (SQLException ex) {
+            Logger.getLogger(Curso.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        try {
+            readTableA();
         } catch (SQLException ex) {
             Logger.getLogger(Curso.class.getName()).log(Level.SEVERE, null, ex);
         } 
